@@ -1,0 +1,19 @@
+version: '3'
+services:
+  application:
+    build: .
+    restart: on-failure
+    image: payment-crud:1.0
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+  database:
+    image: mysql:8.0.26@sha256:75e71ac9b332935f396d85965213a64f1bd6fc7c42e9900b106f7af462c599b0
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_PASSWORD=password
+      - MYSQL_USER=sa
+      - MYSQL_DATABASE=payment_crud_db
+    volumes:
+      - "./db/init.sql:/docker-entrypoint-initdb.d/1.sql"
