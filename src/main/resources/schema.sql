@@ -24,7 +24,7 @@ create table payment_type
 create table currency
 (
     id       bigint             not null auto_increment primary key,
-    currency varchar(10) unique not null
+    currency varchar(5) unique not null
 );
 
 create table bic_code
@@ -46,7 +46,6 @@ create table payment
     details               varchar(255),
     created_at            timestamp not null,
 
-    constraint un__creditor_iban__debtor_iban unique (creditor_iban_id, debtor_iban_id),
     constraint fk__payment__creditor_iban foreign key (creditor_iban_id) references iban (id),
     constraint fk__payment__debtor_iban foreign key (debtor_iban_id) references iban (id),
     constraint fk__payment__payment_type foreign key (payment_type_id) references payment_type (id),

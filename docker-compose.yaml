@@ -16,4 +16,5 @@ services:
       - MYSQL_USER=sa
       - MYSQL_DATABASE=payment_crud_db
     volumes:
-      - "./db/init.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/1.sql"
+      - "./src/main/resources/data.sql:/docker-entrypoint-initdb.d/2.sql"
