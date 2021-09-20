@@ -1,10 +1,8 @@
 package com.crud.payment.service;
 
-import com.crud.payment.BaseTest;
 import com.crud.payment.domain.Payment;
 import com.crud.payment.domain.PaymentType;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigInteger;
 import java.time.Clock;
@@ -12,12 +10,13 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class FeeCalculationServiceTest extends BaseTest {
+public class FeeCalculationServiceUnitTest {
 
-    @MockBean
-    private Clock clock;
+    private final Clock clock = mock(Clock.class);
+    private final FeeCalculationService feeCalculationService = new FeeCalculationService(clock);
 
     @Test
     public void testFeeCalculation() {

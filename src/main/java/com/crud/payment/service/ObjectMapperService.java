@@ -8,6 +8,8 @@ import com.crud.payment.dto.payment.PaymentReadDto;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ObjectMapperService {
@@ -33,6 +35,10 @@ public class ObjectMapperService {
             dto.setIsCanceled(true);
         }
         return dto;
+    }
+
+    public List<PaymentReadDto> toDtoList(List<Payment> entities) {
+        return entities.stream().map(this::toDto).collect(Collectors.toList());
     }
 
     public IbanReadDto toDto(Iban entity) {

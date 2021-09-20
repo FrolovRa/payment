@@ -1,19 +1,17 @@
 package com.crud.payment.service;
 
-import com.crud.payment.BaseTest;
+import com.crud.payment.SpringTest;
 import com.crud.payment.dto.iban.IbanCreateDto;
 import com.crud.payment.dto.iban.IbanReadDto;
 import com.crud.payment.exception.EntityNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class IbanServiceTest extends BaseTest {
+public class IbanServiceTest extends SpringTest {
 
     @Test
-    @Sql(scripts = {"/db/iban-data.sql"})
     public void shouldFindIbanById()  {
         IbanReadDto iban = ibanService.findById(1L);
 
