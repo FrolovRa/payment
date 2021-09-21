@@ -1,10 +1,9 @@
 package com.crud.payment.filter;
 
+import com.crud.payment.domain.User;
 import com.crud.payment.service.JwtProviderService;
-import com.crud.payment.service.UserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -22,12 +21,9 @@ import static org.springframework.util.StringUtils.hasText;
 public class JwtFilter extends GenericFilterBean {
 
     private final JwtProviderService jwtProvider;
-    private final UserDetailsService userDetailsService;
 
-    public JwtFilter(JwtProviderService jwtProvider,
-                     UserDetailsService userDetailsService) {
+    public JwtFilter(JwtProviderService jwtProvider) {
         this.jwtProvider = jwtProvider;
-        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -36,9 +32,8 @@ public class JwtFilter extends GenericFilterBean {
                          FilterChain filterChain) throws IOException, ServletException {
         String token = getTokenFromRequest((HttpServletRequest) servletRequest);
         if (token != null && jwtProvider.validateToken(token)) {
-            String userLogin = jwtProvider.getLoginFromToken(token);
-            UserDetails userDetails = userDetailsService.getUserDetails(userLogin);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, new HashSet<>());
+            User user = jwtProvider.getUserFromToken(token);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, new HashSet<>());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(servletRequest, servletResponse);

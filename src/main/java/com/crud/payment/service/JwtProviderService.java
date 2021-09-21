@@ -1,5 +1,6 @@
 package com.crud.payment.service;
 
+import com.crud.payment.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,11 +17,13 @@ public class JwtProviderService {
     @Value("$(jwt.secret)")
     private String jwtSecret;
 
-    public String generateToken(String login) {
+    public String generateToken(User user) {
         Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
-                .setSubject(login)
+                .setSubject(user.getName())
                 .setExpiration(date)
+                .claim("id", user.getId())
+                .claim("password", user.getPassword())
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
@@ -34,8 +37,11 @@ public class JwtProviderService {
         }
     }
 
-    public String getLoginFromToken(String token) {
+    public User getUserFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-        return claims.getSubject();
+        final String name = claims.getSubject();
+        final Long id = (Long) claims.get("id");
+        final String password = (String) claims.get("password");
+        return new User(id, name, password);
     }
 }

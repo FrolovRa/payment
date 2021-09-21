@@ -33,6 +33,8 @@ public class ObjectMapperService {
 
             dto.setCancellationFee(fee.toString());
             dto.setIsCanceled(true);
+        } else {
+            dto.setIsCanceled(false);
         }
         return dto;
     }

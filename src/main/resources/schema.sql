@@ -23,7 +23,7 @@ create table payment_type
 
 create table currency
 (
-    id       bigint             not null auto_increment primary key,
+    id       bigint            not null auto_increment primary key,
     currency varchar(5) unique not null
 );
 
@@ -40,7 +40,7 @@ create table payment
     debtor_iban_id        bigint    not null,
     payment_type_id       bigint    not null,
     currency_id           bigint    not null,
-    bic_code_id           bigint    not null,
+    bic_code_id           bigint,
     cancel_for_payment_id bigint,
     amount                numeric   not null,
     details               varchar(255),

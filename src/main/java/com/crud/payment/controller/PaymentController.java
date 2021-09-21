@@ -3,6 +3,7 @@ package com.crud.payment.controller;
 import com.crud.payment.dto.payment.PaymentCreateDto;
 import com.crud.payment.dto.payment.PaymentReadDto;
 import com.crud.payment.service.PaymentService;
+import com.crud.payment.validation.aop.PaymentValidation;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ public class PaymentController {
         return paymentService.findById(id);
     }
 
+    @PaymentValidation
     @PostMapping("/payments")
     public PaymentReadDto save(@RequestBody PaymentCreateDto payment) {
         return paymentService.save(payment);

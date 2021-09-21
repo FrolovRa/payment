@@ -25,6 +25,6 @@ public class AuthService {
                 .findByNameAndPassword(dto.getName(), dto.getPassword())
                 .orElseThrow(() -> new EntityNotFoundException(User.class));
 
-        return jwtProviderService.generateToken(user.getName());
+        return jwtProviderService.generateToken(user);
     }
 }

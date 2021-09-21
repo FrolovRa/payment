@@ -1,7 +1,7 @@
 package com.crud.payment.controller;
 
 import com.crud.payment.SpringTest;
-import com.crud.payment.service.JwtProviderService;
+import com.crud.payment.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,9 +17,6 @@ public class UserPaymentControllerTest extends SpringTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private JwtProviderService jwtProviderService;
-
     @Test
     public void getAllPaymentsShouldBeForbidden() throws Exception {
         mockMvc.perform(get("/users/1/payments"))
@@ -28,10 +25,13 @@ public class UserPaymentControllerTest extends SpringTest {
 
     @Test
     public void getAllPaymentsWithToken() throws Exception {
-        String string = jwtProviderService.generateToken("user1");
+        User user = new User();
+        user.setName("user1");
+        user.setPassword("password");
+        String token = jwtProviderService.generateToken(user);
 
         mockMvc.perform(get("/users/1/payments")
-                        .header("Authorization", "Bearer " + string))
+                        .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
     }

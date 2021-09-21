@@ -1,9 +1,6 @@
 package com.crud.payment;
 
-import com.crud.payment.service.FeeCalculationService;
-import com.crud.payment.service.IbanService;
-import com.crud.payment.service.PaymentService;
-import com.crud.payment.service.UserPaymentService;
+import com.crud.payment.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +28,7 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TE
         }, executionPhase = AFTER_TEST_METHOD)
 })
 @AutoConfigureTestDatabase
-public class SpringTest {
+public abstract class SpringTest {
     @Autowired
     protected PaymentService paymentService;
 
@@ -43,4 +40,7 @@ public class SpringTest {
 
     @Autowired
     protected UserPaymentService userPaymentService;
+
+    @Autowired
+    protected JwtProviderService jwtProviderService;
 }
