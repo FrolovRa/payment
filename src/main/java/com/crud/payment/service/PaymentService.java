@@ -25,10 +25,7 @@ public class PaymentService {
 
     @Transactional(readOnly = true)
     public PaymentReadDto findById(Long id) {
-        return paymentRepository
-                .findById(id)
-                .map(mapperService::toDto)
-                .orElseThrow(() -> new EntityNotFoundException(Payment.class, id));
+        return mapperService.toDto(findByIdHelper(id));
     }
 
     @Transactional
@@ -40,9 +37,7 @@ public class PaymentService {
 
     @Transactional
     public PaymentReadDto cancel(Long id) {
-        Payment payment = paymentRepository
-                .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Payment.class, id));
+        Payment payment = findByIdHelper(id);
 
         Payment cancelPayment = new Payment();
         cancelPayment.setCurrency(payment.getCurrency());
@@ -51,8 +46,14 @@ public class PaymentService {
         cancelPayment.setBicCode(payment.getBicCode());
         cancelPayment.setPaymentType(payment.getPaymentType());
         cancelPayment.setCancelForPayment(payment);
-        cancelPayment.setAmount(feeCalculationService.calculateFee(payment));
+        cancelPayment.setAmount(payment.getAmount().subtract(feeCalculationService.calculateFee(payment)));
         cancelPayment = paymentRepository.save(cancelPayment);
         return mapperService.toDto(cancelPayment);
+    }
+
+    private Payment findByIdHelper(Long id) {
+        return paymentRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Payment.class, id));
     }
 }

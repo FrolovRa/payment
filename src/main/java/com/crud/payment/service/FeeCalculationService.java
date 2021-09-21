@@ -1,6 +1,7 @@
 package com.crud.payment.service;
 
 import com.crud.payment.domain.Payment;
+import com.crud.payment.exception.CanNotCancelPayment;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -26,9 +27,12 @@ public class FeeCalculationService {
         final Instant now = clock.instant();
 
         final long duration = Duration.between(createdAt, now).toHours();
+        final double overallCoefficient = Math.min(1.0, duration * feeCoefficient);
 
-        return originAmountDecimal
-                .subtract(originAmountDecimal.multiply(BigDecimal.valueOf(duration * feeCoefficient)))
-                .toBigInteger();
+        if (overallCoefficient == 1.0) {
+            throw new CanNotCancelPayment("Cancellation fee is 100%. Payment can not be canceled.");
+        }
+
+        return originAmountDecimal.multiply(BigDecimal.valueOf(overallCoefficient)).toBigInteger();
     }
 }
