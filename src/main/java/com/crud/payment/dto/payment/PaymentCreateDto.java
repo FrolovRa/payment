@@ -2,9 +2,9 @@ package com.crud.payment.dto.payment;
 
 import com.crud.payment.validation.OnlyEur;
 import com.crud.payment.validation.OnlyUsd;
-import com.crud.payment.validation.group.PaymentTypeOne;
-import com.crud.payment.validation.group.PaymentTypeThree;
-import com.crud.payment.validation.group.PaymentTypeTwo;
+import com.crud.payment.validation.group.payment.PaymentTypeOne;
+import com.crud.payment.validation.group.payment.PaymentTypeThree;
+import com.crud.payment.validation.group.payment.PaymentTypeTwo;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

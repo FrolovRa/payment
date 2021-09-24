@@ -14,7 +14,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class ControllerAdvice {
 
-    @ExceptionHandler(PaymentValidationException.class)
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handle(PaymentValidationException ex) {
         HashMap<String, String> response = new HashMap<>();

@@ -7,18 +7,28 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.Clock;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Service
 public class JwtProviderService {
 
-    @Value("$(jwt.secret)")
-    private String jwtSecret;
+    private final String jwtSecret;
+    private final Clock clock;
+
+    public JwtProviderService(@Value("$(jwt.secret)") String jwtSecret,
+                              Clock clock) {
+        this.jwtSecret = jwtSecret;
+        this.clock = clock;
+    }
 
     public String generateToken(User user) {
-        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date date = Date.from(clock.instant()
+                .plus(1, ChronoUnit.DAYS)
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
         return Jwts.builder()
                 .setSubject(user.getName())
                 .setExpiration(date)

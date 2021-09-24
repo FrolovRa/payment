@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = { GreaterThanZeroBigIntegerValidator.class})
 public @interface GreaterThanZeroBigInteger {
-    String message() default "Amount can't be less or equal to zero";
+    String message() default "amount must be greater than zero";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
 }

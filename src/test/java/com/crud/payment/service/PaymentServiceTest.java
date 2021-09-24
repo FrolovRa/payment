@@ -62,7 +62,7 @@ public class PaymentServiceTest extends SpringTest {
 
         assertThat(ex.getConstraintViolations())
                 .extracting("message")
-                .contains("Amount can't be less or equal to zero");
+                .contains("amount must be greater than zero");
     }
 
     @Test
